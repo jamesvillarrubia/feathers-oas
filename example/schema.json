@@ -1,0 +1,833 @@
+{
+  "paths": {
+    "/ducks": {
+      "get": {
+        "tags": [
+          "ducks"
+        ],
+        "summary": "Returns duck based on query parameters",
+        "operationId": "getDucks",
+        "description": "By including the appropriate query string parameters, search & return relevant ducks records.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Duck_FJS_Array"
+          },
+          "400": {
+            "description": "bad input parameter"
+          },
+          "default": {
+            "description": "default response if no query string parameters are sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./errors.yml#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ducks"
+        ],
+        "summary": "adds a new duck",
+        "operationId": "postDuck",
+        "description": "Creates a new duck",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Duck"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Duck"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Duck created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Duck"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Duck"
+                      }
+                    }
+                  ]
+                },
+                "examples": {
+                  "${names}_post_default": {
+                    "$ref": "#/components/examples/ducks_post_default"
+                  },
+                  "${names}_post_array": {
+                    "$ref": "#/components/examples/ducks_post_array"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input, object invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./errors.yml#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "that duck already exists"
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./errors.yml#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ducks/{duckId}": {
+      "get": {
+        "tags": [
+          "ducks"
+        ],
+        "summary": "Returns duck based id",
+        "operationId": "getDuck",
+        "description": "By including the id, get a single duck",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "duckId",
+            "description": "the id of a specific duck",
+            "required": true,
+            "schema": {
+              "$ref": "./shared.yml#/components/schemas/IntegerId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "includes the results matching query string criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Duck"
+                  }
+                },
+                "examples": {
+                  "ducks_id_default": {
+                    "$ref": "#/components/examples/ducks_id_default"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./errors.yml#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ducks"
+        ],
+        "summary": "soft deletes multiple ducks",
+        "operationId": "deleteDucks",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "duckId",
+            "description": "the id of a specific duck",
+            "required": true,
+            "schema": {
+              "$ref": "./shared.yml#/components/schemas/IntegerId"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "multiple deletes not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "ducks_delete": {
+                    "$ref": "#/components/examples/ducks_id_delete_default"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "ducks"
+        ],
+        "summary": "patches a subset of fields on a duck",
+        "operationId": "patchDuck",
+        "description": "Patches a duck by field",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "duckId",
+            "description": "the id of a specific duck",
+            "schema": {
+              "$ref": "./shared.yml#/components/schemas/IntegerId"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Duck"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "duck patched",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Duck"
+                },
+                "examples": {
+                  "ducks_id_patch_default": {
+                    "$ref": "#/components/examples/ducks_id_patch_default"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input, object invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./errors.yml#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/books": {
+      "get": {
+        "tags": [
+          "books"
+        ],
+        "summary": "Returns book based on query parameters",
+        "operationId": "getBooks",
+        "description": "By including the appropriate query string parameters, search & return relevant books records.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Book_FJS_Array"
+          },
+          "400": {
+            "description": "bad input parameter"
+          },
+          "default": {
+            "description": "default response if no query string parameters are sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./errors.yml#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "books"
+        ],
+        "summary": "adds a new book",
+        "operationId": "postBook",
+        "description": "Creates a new book",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Book"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Book"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Book created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Book"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Book"
+                      }
+                    }
+                  ]
+                },
+                "examples": {
+                  "${names}_post_default": {
+                    "$ref": "#/components/examples/books_post_default"
+                  },
+                  "${names}_post_array": {
+                    "$ref": "#/components/examples/books_post_array"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input, object invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./errors.yml#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "that book already exists"
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./errors.yml#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/books/{bookId}": {
+      "get": {
+        "tags": [
+          "books"
+        ],
+        "summary": "Returns book based id",
+        "operationId": "getBook",
+        "description": "By including the id, get a single book",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "bookId",
+            "description": "the id of a specific book",
+            "required": true,
+            "schema": {
+              "$ref": "./shared.yml#/components/schemas/IntegerId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "includes the results matching query string criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                },
+                "examples": {
+                  "books_id_default": {
+                    "$ref": "#/components/examples/books_id_default"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./errors.yml#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "books"
+        ],
+        "summary": "soft deletes multiple books",
+        "operationId": "deleteBooks",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "bookId",
+            "description": "the id of a specific book",
+            "required": true,
+            "schema": {
+              "$ref": "./shared.yml#/components/schemas/IntegerId"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "multiple deletes not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "books_delete": {
+                    "$ref": "#/components/examples/books_id_delete_default"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "books"
+        ],
+        "summary": "updates a whole book",
+        "operationId": "putBook",
+        "description": "Updates a whole book",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "bookId",
+            "description": "the id of a specific book",
+            "required": true,
+            "schema": {
+              "$ref": "./shared.yml#/components/schemas/IntegerId"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "book updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Book"
+                },
+                "examples": {
+                  "books_id_put_default": {
+                    "$ref": "#/components/examples/books_id_put_default"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "books"
+        ],
+        "summary": "patches a subset of fields on a book",
+        "operationId": "patchBook",
+        "description": "Patches a book by field",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "bookId",
+            "description": "the id of a specific book",
+            "schema": {
+              "$ref": "./shared.yml#/components/schemas/IntegerId"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Book"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "book patched",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Book"
+                },
+                "examples": {
+                  "books_id_patch_default": {
+                    "$ref": "#/components/examples/books_id_patch_default"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid input, object invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./errors.yml#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "Duck_FJS_Array": {
+        "description": "includes the results matching query string criteria",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "total",
+                "limit",
+                "skip",
+                "data"
+              ],
+              "properties": {
+                "total": {
+                  "type": "integer"
+                },
+                "limit": {
+                  "type": "integer"
+                },
+                "skip": {
+                  "type": "integer"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Duck"
+                  }
+                }
+              }
+            },
+            "examples": {
+              "ducks_default": {
+                "$ref": "#/components/examples/ducks_default"
+              },
+              "ducks_zero": {
+                "$ref": "#/components/examples/ducks_zero"
+              }
+            }
+          }
+        }
+      },
+      "Book_FJS_Array": {
+        "description": "includes the results matching query string criteria",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "total",
+                "limit",
+                "skip",
+                "data"
+              ],
+              "properties": {
+                "total": {
+                  "type": "integer"
+                },
+                "limit": {
+                  "type": "integer"
+                },
+                "skip": {
+                  "type": "integer"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              }
+            },
+            "examples": {
+              "books_default": {
+                "$ref": "#/components/examples/books_default"
+              },
+              "books_zero": {
+                "$ref": "#/components/examples/books_zero"
+              }
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Duck": {
+        "type": "object",
+        "required": [
+          "id",
+          "text"
+        ],
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "text": {
+            "type": "string"
+          }
+        }
+      },
+      "Book": {
+        "type": "object",
+        "required": [
+          "id",
+          "text"
+        ],
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0
+          },
+          "message": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "className": {
+            "type": "string"
+          }
+        }
+      },
+      "IntegerId": {
+        "type": "integer",
+        "readOnly": true,
+        "minimum": 0,
+        "maximum": 100000000
+      },
+      "ISODate": {
+        "type": "string",
+        "format": "date-time",
+        "example": "2017-07-21T17:32:28.000Z"
+      }
+    },
+    "examples": {
+      "ducks_zero": {
+        "value": {
+          "total": 0,
+          "limit": 10,
+          "skip": 0,
+          "data": []
+        }
+      },
+      "ducks_default": {
+        "value": {
+          "total": 2,
+          "limit": 10,
+          "skip": 0,
+          "data": []
+        }
+      },
+      "ducks_post_default": {
+        "value": {}
+      },
+      "ducks_post_array": {
+        "value": []
+      },
+      "ducks_id_default": {
+        "$ref": "#/components/examples/ducks_post_default"
+      },
+      "ducks_id_patch_default": {
+        "value": {}
+      },
+      "ducks_id_put_default": {
+        "value": {}
+      },
+      "ducks_id_delete_default": {
+        "value": {}
+      },
+      "books_zero": {
+        "value": {
+          "total": 0,
+          "limit": 10,
+          "skip": 0,
+          "data": []
+        }
+      },
+      "books_default": {
+        "value": {
+          "total": 2,
+          "limit": 10,
+          "skip": 0,
+          "data": [
+            {
+              "id": 12345678,
+              "firstName": "Jane",
+              "lastName": "Smith",
+              "createdAt": "2012-11-11T23:36:55.994Z",
+              "updatedAt": "2005-01-02T10:54:59.531Z"
+            },
+            {
+              "id": 3456788,
+              "firstName": "Bob",
+              "lastName": "Smith",
+              "createdAt": "2012-11-11T23:36:55.994Z",
+              "updatedAt": "2005-01-02T10:54:59.531Z"
+            }
+          ]
+        }
+      },
+      "books_post_default": {
+        "value": {
+          "id": 12345678,
+          "firstName": "Jane",
+          "lastName": "Smith",
+          "createdAt": "2012-11-11T23:36:55.994Z",
+          "updatedAt": "2005-01-02T10:54:59.531Z"
+        }
+      },
+      "books_post_array": {
+        "value": [
+          {
+            "id": 12345678,
+            "firstName": "Jane",
+            "lastName": "Smith",
+            "createdAt": "2012-11-11T23:36:55.994Z",
+            "updatedAt": "2005-01-02T10:54:59.531Z"
+          },
+          {
+            "id": 3456788,
+            "firstName": "Bob",
+            "lastName": "Smith",
+            "createdAt": "2012-11-11T23:36:55.994Z",
+            "updatedAt": "2005-01-02T10:54:59.531Z"
+          }
+        ]
+      },
+      "books_id_default": {
+        "$ref": "#/components/examples/books_post_default"
+      },
+      "books_id_patch_default": {
+        "value": {
+          "id": 12345678,
+          "firstName": "Janet",
+          "lastName": "Smith",
+          "createdAt": "2012-11-11T23:36:55.994Z",
+          "updatedAt": "2005-01-02T10:54:59.531Z"
+        }
+      },
+      "books_id_put_default": {
+        "value": {
+          "id": 12345678,
+          "firstName": "Jane",
+          "lastName": "Smith",
+          "createdAt": "2012-11-11T23:36:55.994Z",
+          "updatedAt": "2005-01-02T10:54:59.531Z"
+        }
+      },
+      "books_id_delete_default": {
+        "value": {
+          "id": 12345678,
+          "firstName": "Jane",
+          "lastName": "Smith",
+          "createdAt": "2012-11-11T23:36:55.994Z",
+          "updatedAt": "2005-01-02T10:54:59.531Z"
+        }
+      }
+    }
+  }
+}

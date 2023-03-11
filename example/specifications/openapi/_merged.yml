@@ -1,0 +1,1003 @@
+openapi: 3.0.0
+info: {}
+security: []
+paths:
+  /ducks:
+    get:
+      tags:
+        - ducks
+      summary: Returns duck based on query parameters
+      operationId: getDucks
+      description: >-
+        By including the appropriate query string parameters, search & return
+        relevant ducks records.
+      responses:
+        '200':
+          description: includes the results matching query string criteria
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - total
+                  - limit
+                  - skip
+                  - data
+                properties:
+                  total:
+                    type: integer
+                  limit:
+                    type: integer
+                  skip:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      required: []
+                      properties:
+                        id:
+                          type: number
+                        text:
+                          type: string
+              examples:
+                ducks_default:
+                  value:
+                    total: 2
+                    limit: 10
+                    skip: 0
+                    data: []
+                ducks_zero:
+                  value:
+                    total: 0
+                    limit: 10
+                    skip: 0
+                    data: []
+        '400':
+          description: bad input parameter
+        default:
+          description: default response if no query string parameters are sent
+          content:
+            application/json:
+              schema:
+                $ref: ./errors.yml#/components/schemas/Error
+    post:
+      tags:
+        - ducks
+      summary: adds a new duck
+      operationId: postDuck
+      description: Creates a new duck
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: object
+                  required: []
+                  properties:
+                    id:
+                      type: number
+                    text:
+                      type: string
+                - type: array
+                  items:
+                    type: object
+                    required: []
+                    properties:
+                      id:
+                        type: number
+                      text:
+                        type: string
+      responses:
+        '201':
+          description: Duck created.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    required: []
+                    properties:
+                      id:
+                        type: number
+                      text:
+                        type: string
+                  - type: array
+                    items:
+                      type: object
+                      required: []
+                      properties:
+                        id:
+                          type: number
+                        text:
+                          type: string
+              examples:
+                ${names}_post_default:
+                  value: {}
+                ${names}_post_array:
+                  value: []
+        '400':
+          description: invalid input, object invalid
+          content:
+            application/json:
+              schema:
+                $ref: ./errors.yml#/components/schemas/Error
+        '409':
+          description: that duck already exists
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: ./errors.yml#/components/schemas/Error
+  /ducks/{duckId}:
+    get:
+      tags:
+        - ducks
+      summary: Returns duck based id
+      operationId: getDuck
+      description: By including the id, get a single duck
+      parameters:
+        - in: path
+          name: duckId
+          description: the id of a specific duck
+          required: true
+          schema:
+            $ref: ./shared.yml#/components/schemas/IntegerId
+      responses:
+        '200':
+          description: includes the results matching query string criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required: []
+                  properties:
+                    id:
+                      type: number
+                    text:
+                      type: string
+              examples:
+                ducks_id_default:
+                  value: {}
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: ./errors.yml#/components/schemas/Error
+    delete:
+      tags:
+        - ducks
+      summary: soft deletes multiple ducks
+      operationId: deleteDucks
+      parameters:
+        - in: path
+          name: duckId
+          description: the id of a specific duck
+          required: true
+          schema:
+            $ref: ./shared.yml#/components/schemas/IntegerId
+      responses:
+        '405':
+          description: multiple deletes not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                ducks_delete:
+                  value: {}
+    patch:
+      tags:
+        - ducks
+      summary: patches a subset of fields on a duck
+      operationId: patchDuck
+      description: Patches a duck by field
+      parameters:
+        - in: path
+          name: duckId
+          description: the id of a specific duck
+          schema:
+            $ref: ./shared.yml#/components/schemas/IntegerId
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: []
+              properties:
+                id:
+                  type: number
+                text:
+                  type: string
+      responses:
+        '200':
+          description: duck patched
+          content:
+            application/json:
+              schema:
+                type: object
+                required: []
+                properties:
+                  id:
+                    type: number
+                  text:
+                    type: string
+              examples:
+                ducks_id_patch_default:
+                  value: {}
+        '400':
+          description: invalid input, object invalid
+          content:
+            application/json:
+              schema:
+                $ref: ./errors.yml#/components/schemas/Error
+  /books:
+    get:
+      tags:
+        - books
+      summary: Returns book based on query parameters
+      operationId: getBooks
+      description: >-
+        By including the appropriate query string parameters, search & return
+        relevant books records.
+      responses:
+        '200':
+          description: includes the results matching query string criteria
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - total
+                  - limit
+                  - skip
+                  - data
+                properties:
+                  total:
+                    type: integer
+                  limit:
+                    type: integer
+                  skip:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      required: []
+                      properties:
+                        id:
+                          type: number
+                        firstName:
+                          type: string
+                        lastName:
+                          type: string
+              examples:
+                books_default:
+                  value:
+                    total: 2
+                    limit: 10
+                    skip: 0
+                    data: []
+                books_zero:
+                  value:
+                    total: 0
+                    limit: 10
+                    skip: 0
+                    data: []
+        '400':
+          description: bad input parameter
+        default:
+          description: default response if no query string parameters are sent
+          content:
+            application/json:
+              schema:
+                $ref: ./errors.yml#/components/schemas/Error
+    post:
+      tags:
+        - books
+      summary: adds a new book
+      operationId: postBook
+      description: Creates a new book
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: object
+                  required: []
+                  properties:
+                    id:
+                      type: number
+                    firstName:
+                      type: string
+                    lastName:
+                      type: string
+                - type: array
+                  items:
+                    type: object
+                    required: []
+                    properties:
+                      id:
+                        type: number
+                      firstName:
+                        type: string
+                      lastName:
+                        type: string
+      responses:
+        '201':
+          description: Book created.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    required: []
+                    properties:
+                      id:
+                        type: number
+                      firstName:
+                        type: string
+                      lastName:
+                        type: string
+                  - type: array
+                    items:
+                      type: object
+                      required: []
+                      properties:
+                        id:
+                          type: number
+                        firstName:
+                          type: string
+                        lastName:
+                          type: string
+              examples:
+                ${names}_post_default:
+                  value: {}
+                ${names}_post_array:
+                  value: []
+        '400':
+          description: invalid input, object invalid
+          content:
+            application/json:
+              schema:
+                $ref: ./errors.yml#/components/schemas/Error
+        '409':
+          description: that book already exists
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: ./errors.yml#/components/schemas/Error
+  /books/{bookId}:
+    get:
+      tags:
+        - books
+      summary: Returns book based id
+      operationId: getBook
+      description: By including the id, get a single book
+      parameters:
+        - in: path
+          name: bookId
+          description: the id of a specific book
+          required: true
+          schema:
+            $ref: ./shared.yml#/components/schemas/IntegerId
+      responses:
+        '200':
+          description: includes the results matching query string criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required: []
+                  properties:
+                    id:
+                      type: number
+                    firstName:
+                      type: string
+                    lastName:
+                      type: string
+              examples:
+                books_id_default:
+                  value: {}
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: ./errors.yml#/components/schemas/Error
+    delete:
+      tags:
+        - books
+      summary: soft deletes multiple books
+      operationId: deleteBooks
+      parameters:
+        - in: path
+          name: bookId
+          description: the id of a specific book
+          required: true
+          schema:
+            $ref: ./shared.yml#/components/schemas/IntegerId
+      responses:
+        '405':
+          description: multiple deletes not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                books_delete:
+                  value: {}
+    put:
+      tags:
+        - books
+      summary: updates a whole book
+      operationId: putBook
+      description: Updates a whole book
+      parameters:
+        - in: path
+          name: bookId
+          description: the id of a specific book
+          required: true
+          schema:
+            $ref: ./shared.yml#/components/schemas/IntegerId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: object
+                  required: []
+                  properties:
+                    id:
+                      type: number
+                    firstName:
+                      type: string
+                    lastName:
+                      type: string
+      responses:
+        '200':
+          description: book updated
+          content:
+            application/json:
+              schema:
+                type: object
+                required: []
+                properties:
+                  id:
+                    type: number
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+              examples:
+                books_id_put_default:
+                  value: {}
+        '400':
+          description: invalid input, object invalid
+    patch:
+      tags:
+        - books
+      summary: patches a subset of fields on a book
+      operationId: patchBook
+      description: Patches a book by field
+      parameters:
+        - in: path
+          name: bookId
+          description: the id of a specific book
+          schema:
+            $ref: ./shared.yml#/components/schemas/IntegerId
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: []
+              properties:
+                id:
+                  type: number
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+      responses:
+        '200':
+          description: book patched
+          content:
+            application/json:
+              schema:
+                type: object
+                required: []
+                properties:
+                  id:
+                    type: number
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+              examples:
+                books_id_patch_default:
+                  value: {}
+        '400':
+          description: invalid input, object invalid
+          content:
+            application/json:
+              schema:
+                $ref: ./errors.yml#/components/schemas/Error
+  /customs:
+    get:
+      tags:
+        - customs
+      summary: Returns custom based on query parameters
+      operationId: getCustoms
+      description: >-
+        By including the appropriate query string parameters, search & return
+        relevant customs records.
+      responses:
+        '200':
+          description: includes the results matching query string criteria
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - total
+                  - limit
+                  - skip
+                  - data
+                properties:
+                  total:
+                    type: integer
+                  limit:
+                    type: integer
+                  skip:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      required: []
+                      properties:
+                        id:
+                          $ref: ./shared.yml#/components/schemas/IntegerId
+              examples:
+                customs_default:
+                  value:
+                    total: 2
+                    limit: 10
+                    skip: 0
+                    data: []
+                customs_zero:
+                  value:
+                    total: 0
+                    limit: 10
+                    skip: 0
+                    data: []
+        '400':
+          description: bad input parameter
+        default:
+          description: default response if no query string parameters are sent
+          content:
+            application/json:
+              schema:
+                $ref: ./errors.yml#/components/schemas/Error
+    post:
+      tags:
+        - customs
+      summary: adds a new custom
+      operationId: postCustom
+      description: Creates a new custom
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: object
+                  required: []
+                  properties:
+                    id:
+                      $ref: ./shared.yml#/components/schemas/IntegerId
+                - type: array
+                  items:
+                    type: object
+                    required: []
+                    properties:
+                      id:
+                        $ref: ./shared.yml#/components/schemas/IntegerId
+      responses:
+        '201':
+          description: Custom created.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    required: []
+                    properties:
+                      id:
+                        $ref: ./shared.yml#/components/schemas/IntegerId
+                  - type: array
+                    items:
+                      type: object
+                      required: []
+                      properties:
+                        id:
+                          $ref: ./shared.yml#/components/schemas/IntegerId
+              examples:
+                ${names}_post_default:
+                  value: {}
+                ${names}_post_array:
+                  value: []
+        '400':
+          description: invalid input, object invalid
+          content:
+            application/json:
+              schema:
+                $ref: ./errors.yml#/components/schemas/Error
+        '409':
+          description: that custom already exists
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: ./errors.yml#/components/schemas/Error
+  /customs/{customId}:
+    get:
+      tags:
+        - customs
+      summary: Returns custom based id
+      operationId: getCustom
+      description: By including the id, get a single custom
+      parameters:
+        - in: path
+          name: customId
+          description: the id of a specific custom
+          required: true
+          schema:
+            $ref: ./shared.yml#/components/schemas/IntegerId
+      responses:
+        '200':
+          description: includes the results matching query string criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required: []
+                  properties:
+                    id:
+                      $ref: ./shared.yml#/components/schemas/IntegerId
+              examples:
+                customs_id_default:
+                  value: {}
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: ./errors.yml#/components/schemas/Error
+    delete:
+      tags:
+        - customs
+      summary: soft deletes multiple customs
+      operationId: deleteCustoms
+      parameters:
+        - in: path
+          name: customId
+          description: the id of a specific custom
+          required: true
+          schema:
+            $ref: ./shared.yml#/components/schemas/IntegerId
+      responses:
+        '405':
+          description: multiple deletes not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                customs_delete:
+                  value: {}
+    patch:
+      tags:
+        - customs
+      summary: patches a subset of fields on a custom
+      operationId: patchCustom
+      description: Patches a custom by field
+      parameters:
+        - in: path
+          name: customId
+          description: the id of a specific custom
+          schema:
+            $ref: ./shared.yml#/components/schemas/IntegerId
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: []
+              properties:
+                id:
+                  $ref: ./shared.yml#/components/schemas/IntegerId
+      responses:
+        '200':
+          description: custom patched
+          content:
+            application/json:
+              schema:
+                type: object
+                required: []
+                properties:
+                  id:
+                    $ref: ./shared.yml#/components/schemas/IntegerId
+              examples:
+                customs_id_patch_default:
+                  value: {}
+        '400':
+          description: invalid input, object invalid
+          content:
+            application/json:
+              schema:
+                $ref: ./errors.yml#/components/schemas/Error
+components:
+  securitySchemes: {}
+  requestBodies: {}
+  responses:
+    Duck_FJS_Array:
+      description: includes the results matching query string criteria
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - total
+              - limit
+              - skip
+              - data
+            properties:
+              total:
+                type: integer
+              limit:
+                type: integer
+              skip:
+                type: integer
+              data:
+                type: array
+                items:
+                  type: object
+                  required: []
+                  properties:
+                    id:
+                      type: number
+                    text:
+                      type: string
+          examples:
+            ducks_default:
+              value:
+                total: 2
+                limit: 10
+                skip: 0
+                data: []
+            ducks_zero:
+              value:
+                total: 0
+                limit: 10
+                skip: 0
+                data: []
+    Book_FJS_Array:
+      description: includes the results matching query string criteria
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - total
+              - limit
+              - skip
+              - data
+            properties:
+              total:
+                type: integer
+              limit:
+                type: integer
+              skip:
+                type: integer
+              data:
+                type: array
+                items:
+                  type: object
+                  required: []
+                  properties:
+                    id:
+                      type: number
+                    firstName:
+                      type: string
+                    lastName:
+                      type: string
+          examples:
+            books_default:
+              value:
+                total: 2
+                limit: 10
+                skip: 0
+                data: []
+            books_zero:
+              value:
+                total: 0
+                limit: 10
+                skip: 0
+                data: []
+    Custom_FJS_Array:
+      description: includes the results matching query string criteria
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - total
+              - limit
+              - skip
+              - data
+            properties:
+              total:
+                type: integer
+              limit:
+                type: integer
+              skip:
+                type: integer
+              data:
+                type: array
+                items:
+                  type: object
+                  required: []
+                  properties:
+                    id:
+                      $ref: ./shared.yml#/components/schemas/IntegerId
+          examples:
+            customs_default:
+              value:
+                total: 2
+                limit: 10
+                skip: 0
+                data: []
+            customs_zero:
+              value:
+                total: 0
+                limit: 10
+                skip: 0
+                data: []
+  examples:
+    ducks_zero:
+      value:
+        total: 0
+        limit: 10
+        skip: 0
+        data: []
+    ducks_default:
+      value:
+        total: 2
+        limit: 10
+        skip: 0
+        data: []
+    ducks_post_default:
+      value: {}
+    ducks_post_array:
+      value: []
+    ducks_id_default:
+      value: {}
+    ducks_id_patch_default:
+      value: {}
+    ducks_id_put_default:
+      value: {}
+    ducks_id_delete_default:
+      value: {}
+    books_zero:
+      value:
+        total: 0
+        limit: 10
+        skip: 0
+        data: []
+    books_default:
+      value:
+        total: 2
+        limit: 10
+        skip: 0
+        data: []
+    books_post_default:
+      value: {}
+    books_post_array:
+      value: []
+    books_id_default:
+      value: {}
+    books_id_patch_default:
+      value: {}
+    books_id_put_default:
+      value: {}
+    books_id_delete_default:
+      value: {}
+    customs_zero:
+      value:
+        total: 0
+        limit: 10
+        skip: 0
+        data: []
+    customs_default:
+      value:
+        total: 2
+        limit: 10
+        skip: 0
+        data: []
+    customs_post_default:
+      value: {}
+    customs_post_array:
+      value: []
+    customs_id_default:
+      value: {}
+    customs_id_patch_default:
+      value: {}
+    customs_id_put_default:
+      value: {}
+    customs_id_delete_default:
+      value: {}
+  schemas:
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          minimum: 0
+        message:
+          type: string
+        name:
+          type: string
+        className:
+          type: string
+    IntegerId:
+      type: integer
+      readOnly: true
+      minimum: 0
+      maximum: 100000000
+    ISODate:
+      type: string
+      format: date-time
+      example: '2017-07-21T17:32:28.000Z'
+    Duck:
+      type: object
+      required: []
+      properties:
+        id:
+          type: number
+        text:
+          type: string
+    Book:
+      type: object
+      required: []
+      properties:
+        id:
+          type: number
+        firstName:
+          type: string
+        lastName:
+          type: string
+    Custom:
+      type: object
+      required: []
+      properties:
+        id:
+          $ref: ./shared.yml#/components/schemas/IntegerId

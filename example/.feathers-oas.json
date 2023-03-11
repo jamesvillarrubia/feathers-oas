@@ -1,0 +1,29 @@
+{
+    "entities":[
+      "ducks",
+      "books",
+      "custom"
+    ],
+    "serviceFiles":{
+      "ducks":"./src/services/ducks/ducks.js",
+      "books":"./src/services/books/books.js"
+    },
+    "freeze":[
+      "books"
+    ],
+    "merge":[
+      "ducks",
+      "books"
+    ],
+    "specFiles":{
+      "ducks":"./src/services/ducks/ducks.spec.yml",
+      "books":"./src/services/books/books.spec.yml"
+    },
+    "coreLocation":"specifications/openapi",
+    "starterFile":"specifications/openapi/spec.yml",
+    "coreFiles":[
+      "./specifications/openapi/spec.yml",
+      "./specifications/openapi/shared.yml",
+      "./specifications/openapi/errors.yml"
+    ]
+}

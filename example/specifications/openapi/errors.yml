@@ -1,0 +1,18 @@
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          minimum: 0
+        message:
+          type: string
+        name:
+          type: string
+        className:
+          type: string

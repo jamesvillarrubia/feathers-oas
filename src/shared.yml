@@ -1,0 +1,11 @@
+components:
+  schemas:
+    IntegerId:
+      type: integer
+      readOnly: true
+      minimum: 0
+      maximum: 100000000
+    ISODate:
+      type: string
+      format: date-time
+      example: '2017-07-21T17:32:28.000Z'

@@ -1,0 +1,25 @@
+openapi: 3.0.0
+title: 'API Specification'
+info:
+security:
+paths:
+  $ref#books: ../../src/services/books/books.spec.yml#paths
+  $ref#custom: ../../src/services/custom/custom.spec.yml#paths
+  $ref#ducks: ../../src/services/ducks/ducks.spec.yml#paths
+components:
+  securitySchemes:
+  requestBodies:
+  responses:
+    $ref#books: ../../src/services/books/books.spec.yml#/components/responses
+    $ref#custom: ../../src/services/custom/custom.spec.yml#/components/responses
+    $ref#ducks: ../../src/services/ducks/ducks.spec.yml#/components/responses
+  examples:
+    $ref#books: ../../src/services/books/books.spec.yml#/components/examples
+    $ref#custom: ../../src/services/custom/custom.spec.yml#/components/examples
+    $ref#ducks: ../../src/services/ducks/ducks.spec.yml#/components/examples
+  schemas:
+    $ref#errors: ../../specifications/openapi/errors.yml#/components/schemas
+    $ref#shared: ../../specifications/openapi/shared.yml#/components/schemas
+    $ref#books: ../../src/services/books/books.spec.yml#/components/schemas
+    $ref#custom: ../../src/services/custom/custom.spec.yml#/components/schemas
+    $ref#ducks: ../../src/services/ducks/ducks.spec.yml#/components/schemas

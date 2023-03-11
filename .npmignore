@@ -1,0 +1,16 @@
+.editorconfig
+.jshintrc
+.istanbul.yml
+.idea/
+.vscode/
+test/
+coverage/
+.github/
+.nyc_output
+example/
+examples/
+.eslintrc.json
+.mocharc.json
+.nycrc.json
+.prettierrc
+docker-compose.yml
