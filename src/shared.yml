@@ -5,6 +5,18 @@ components:
       readOnly: true
       minimum: 0
       maximum: 100000000
+      example: 1
+    Uuid:
+      type: string
+      format: uuid
+      example: '74738ff5-5367-5958-9aee-98fffdcd1876'
+    ObjectId:
+      anyOf:
+        - type: string
+          example: '74738ff5-5367-5958-9aee-98fffdcd1876'
+        - type: object
+          properties: {}
+          additionalProperties: false
     ISODate:
       type: string
       format: date-time
