@@ -56,7 +56,7 @@
     "test": "printf '\\33c\\e[3J' && npm run lint && npm run coverage",
     "test:dev": "printf '\\33c\\e[3J' && npm run lint && npm run mocha -- --watch --esm --watch-files ./test/**/*,./src/**",
     "coverage": "nyc npm run mocha",
-    "release": "release-it --dry-run --ci --config .release-it.js",
+    "release": "release-it --dry-run --ci --config .release-it.cjs",
     "___install": "npm run add:build && npm run add:merge && npm run add:generate && npm run add:validate && npm run add:mock && npm run add:swagger"
   },
   "semistandard": {
