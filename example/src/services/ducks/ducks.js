@@ -1,6 +1,6 @@
 // For more information about this file see https://dove.feathersjs.com/guides/cli/service.html
 
-import { hooks as schemaHooks } from '@feathersjs/schema'
+import { hooks as schemaHooks } from '@feathersjs/schema';
 import {
   ducksDataValidator,
   ducksPatchValidator,
@@ -10,14 +10,14 @@ import {
   ducksDataResolver,
   ducksPatchResolver,
   ducksQueryResolver
-} from './ducks.schema.js'
-import { DucksService, getOptions } from './ducks.class.js'
+} from './ducks.schema.js';
+import { DucksService, getOptions } from './ducks.class.js';
 
-export const ducksPath = 'ducks'
-export const ducksMethods = ['find', 'get', 'create', 'patch', 'remove']
+export const ducksPath = 'ducks';
+export const ducksMethods = ['find', 'get', 'create', 'patch', 'remove'];
 
-export * from './ducks.class.js'
-export * from './ducks.schema.js'
+export * from './ducks.class.js';
+export * from './ducks.schema.js';
 
 // A configure function that registers the service and its hooks via `app.configure`
 export const ducks = (app) => {
@@ -27,7 +27,7 @@ export const ducks = (app) => {
     methods: ducksMethods,
     // You can add additional custom events to be sent to clients here
     events: []
-  })
+  });
   // Initialize hooks
   app.service(ducksPath).hooks({
     around: {
@@ -47,5 +47,5 @@ export const ducks = (app) => {
     error: {
       all: []
     }
-  })
-}
+  });
+};

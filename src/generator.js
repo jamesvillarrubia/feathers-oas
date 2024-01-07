@@ -11,6 +11,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = Path.dirname(__filename);
 
 
+
+
+
 export const getDirectories = async (source)=>{    
   return (
     await pfs.readdir(
@@ -40,6 +43,9 @@ export class Generator{
       this.mainFolder = config?.mainFolder || 'src'
       this.schemaLoc = `./${this.mainFolder}/services/${name}/${name}.${this.fileType}`
       this.specLoc = `./${this.mainFolder}/services/${name}/${name}.spec.yml`
+      this.methodsExport = `${snakeToCamel(name)}Methods`
+      this.schemaExport = `${snakeToCamel(name)}Schema`
+      this.pathExport = `${snakeToCamel(name)}Path`
       this.outputLoc = `./specifications/openapi/`
       this.config = config
       this.freeze = config ? !!config.freeze?.includes(name) : false
@@ -57,7 +63,7 @@ export class Generator{
       let openDir = Path.join(this.pwd, 'specifications/openapi')
       let errorPath = Path.join(this.pwd, 'specifications/openapi/errors.yml')
       let sharedPath = Path.join(this.pwd, 'specifications/openapi/shared.yml')
-
+      
       if (!fs.existsSync(specDir)){
         fs.mkdirSync(specDir);
       }
@@ -80,7 +86,7 @@ export class Generator{
       debug('importJson', path);
       let exists = await this.checkExists(path)
       if(!exists) return false
-      let json = await import(Path.join(this.pwd, path),{assert:{ type: 'json' }})
+      let json = await import(Path.join(this.pwd, path), {assert:{ type: 'json' }})
       if(!json || !json.default) throw new Error(`JSON file does not exist at ${path}`)
       return json.default``
     }
@@ -132,18 +138,21 @@ export class Generator{
       if(!!this.schema && !force) return this.schema;
 
       let schemaLocation = this.config?.serviceFiles?.[this.name] || this.schemaLoc;
-      this.schema = await this.importJs(schemaLocation);
+      let schemaFile = await this.importJs(schemaLocation);
       let shared = await this.importJs(schemaLocation.slice(0,-3)+'.shared'+schemaLocation.slice(-3))
+      this.name = Object.keys(schemaFile) .filter(k => k.endsWith('Path')) .map(k => k.slice(0, k.length - 4))[0];
+      this.schema = schemaFile[this.name+'Schema']
+
 
       if(this.schema){
-        this.methods = this.schema[`${snakeToCamel(this.name)}Methods`] || [];
-        this.properties = this.schema?.[`${snakeToCamel(this.name)}Schema`]?.properties || {};
-        this.support = this.schema?.support || {};
-        this.path = this.schema[`${snakeToCamel(this.name)}Path`]
+        this.methods = schemaFile[this.name+'Methods'] || [];
+        this.properties = this.schema?.properties || {};
+        this.examples = schemaFile[this.name+'SchemaExamples'] || {};
+        this.path = schemaFile[this.name+'Path'] || '';
       }
       if(shared){
-        this.methods = shared[`${snakeToCamel(this.name)}Methods`] || [];
-        this.path = shared[`${snakeToCamel(this.name)}Path`]
+        this.methods = shared[this.methodsExport] || [];
+        this.path = shared[this.name+'Path'] || '';
       }
 
       debug('getSchema', this.schema);
@@ -168,6 +177,7 @@ export class Generator{
         methods: this.methods,
         properties: this.properties,
         path: this.path,
+        examples: this.examples,
         requiredFields: this.required,
         ...this.support
       })

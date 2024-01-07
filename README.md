@@ -21,7 +21,7 @@ This tool assumes that you are using feathers_v5 and that your services live in 
 
 In the `example` folder, you find multiple feathers projects with the code already in place.
 
-## Installation
+## Generating
 
 Once your feathers app and core services are installed, you can run
 
@@ -36,11 +36,75 @@ You will also see a new folder called `specifications` at root.  This is where t
 If you open one of the `{name}.spec.yml` files, you'll see that some basic feathers defaults have been setup for you, based on the methods 
 
 
+## Adding Standard Scripts
+
 ```bash
-npm install --save feathers-oas
+npx foas init
 ```
+This command will add serveral npm scripts to your package.json file.
+- "spec:build": "npm run spec:generate; npm run spec:merge; npm run spec:validate; npm run spec:swagger",
+- "spec:merge": "npx foas merge",
+- "spec:generate": "npx foas generate",
+- "spec:validate": "npx swagger-cli validate ./specifications/openapi/_merged.yml",
+- "spec:mock": "npx @stoplight/prism-cli mock ./specifications/openapi/_merged.yml",
+- "spec:swagger'": "node ./node_modules/swagger-to-static/index.js ./specifications/openapi/_merged.yml ./specifications/build"
+
+
+
+## Merging into one Spec
+
+```bash
+npx foas merge
+```
+This command will merge all of your spec files into one _merged.yml file at `./specifications/_merged.yml`.
+
+## Adding a SwaggerUI to your site
+
+Once the specifications have been merged, you can build a swagger UI for the _merged.yml file.  First, run `npm run spec:swagger` which will build a self-contained `index.html` and `spec.json` inside the `/specifications` folder.  To expose this at root, replace the following line in `app.js`.
+
+```javascript
+// OLD LINE
+// app.use(serveStatic(app.get('public'))) 
+
+// NEW LINE
+app.use(serveStatic('specifications/build'))
+```
+
+Now when you visit the root `/` it will serve the index.html file.
+
+
+## Adding Better examples
+
+The spec that you will build make some basic assumptions around the format of FeathersJS APIs.  But the standard information pulled out of your code is not enough to provide good examples.  To add examples, you should add an `examples` object to the service options like so 
+
+```javascript
+  app.use(toolPath, new MyService(getOptions(app)), {
+    // A list of all methods this service exposes externally
+    methods: toolMethods,
+    // You can add additional custom events to be sent to clients here
+    events: [],
+    examples:{    
+      tools_post_default: { text:"this is my example" },
+      tools_post_array: [{ text:"this is my example" },{ text:"this is the other example" },],
+      tools_id_patch_default: { text:"yo I'm patched" },
+      tools_id_put_default: { text:"yo I'm overwritten" },
+      tools_id_delete_default: {  }
+    }
+  })
+```
+
+## Serving a mock version
+
+
+
 
 
 ## Contributing
 Please see https://github.com/jamesvillarrubia/feathers-oas/blob/main/.github/contributing.md
 
+
+
+## Config Options
+
+- mergedPath: location of the final merged api specification yml file 
+- 

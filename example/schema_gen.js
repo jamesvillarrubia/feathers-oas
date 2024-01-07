@@ -96,6 +96,7 @@ class Generator{
   async importJson(path){
     let exists = await this.checkExists(path)
     if(!exists) return false
+    // eslint-disable-next-line
     let json = await import(path,{assert:{ type: 'json' }})
     if(!json || !json.default) throw new Error(`JSON file does not exist at ${path}`)
     return json.default

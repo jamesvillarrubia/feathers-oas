@@ -1,10 +1,10 @@
-export async function up(knex) {
+export async function up (knex) {
   await knex.schema.createTable('books', (table) => {
-    table.increments('id')
-    table.string('text')
-  })
+    table.increments('id');
+    table.string('text');
+  });
 }
 
-export async function down(knex) {
-  await knex.schema.dropTable('books')
+export async function down (knex) {
+  await knex.schema.dropTable('books');
 }

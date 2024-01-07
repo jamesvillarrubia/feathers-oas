@@ -1,9 +1,9 @@
-import { CustomService, getOptions } from './custom.class.js'
+import { CustomService, getOptions } from './custom.class.js';
 
-export const customPath = 'custom'
-export const customMethods = ['find', 'get', 'create', 'patch', 'remove']
+export const customPath = 'custom';
+export const customMethods = ['find', 'get', 'create', 'patch', 'remove'];
 
-export * from './custom.class.js'
+export * from './custom.class.js';
 
 // A configure function that registers the service and its hooks via `app.configure`
 export const custom = (app) => {
@@ -13,7 +13,7 @@ export const custom = (app) => {
     methods: customMethods,
     // You can add additional custom events to be sent to clients here
     events: []
-  })
+  });
   // Initialize hooks
   app.service(customPath).hooks({
     around: {
@@ -33,5 +33,5 @@ export const custom = (app) => {
     error: {
       all: []
     }
-  })
-}
+  });
+};

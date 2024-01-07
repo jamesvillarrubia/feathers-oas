@@ -1,4 +1,4 @@
-/************** UTILITIES */
+/** ************ UTILITIES */
 export const isObject = value => value !== null && typeof value === 'object';
 
 // A "plain" object is an object who's a direct instance of Object
@@ -11,7 +11,7 @@ export const isPlainObject = value => {
 
 // NOTE: This mutates `object`.
 // It also may mutate anything that gets attached to `object` during the merge.
-export function merge(object, ...sources) {
+export function merge (object, ...sources) {
   for (const source of sources) {
     for (const [key, value] of Object.entries(source)) {
       if (value === undefined) {
@@ -28,7 +28,7 @@ export function merge(object, ...sources) {
       } else if (!isObject(object[key])) {
         object[key] = value;
       } else {
-        merge(object[key], value)
+        merge(object[key], value);
       }
     }
   }
@@ -36,8 +36,7 @@ export function merge(object, ...sources) {
   return object;
 }
 
-
-export function snakeToCamel(str){
+export function snakeToCamel (str) {
   return str.toLowerCase().replace(/([-_][a-z])/g, group =>
     group
       .toUpperCase()

@@ -1,6 +1,6 @@
-import { defaultAppSettings, getValidator } from '@feathersjs/schema'
+import { defaultAppSettings, getValidator } from '@feathersjs/schema';
 
-import { dataValidator } from './validators.js'
+import { dataValidator } from './validators.js';
 
 export const configurationSchema = {
   $id: 'configuration',
@@ -13,6 +13,6 @@ export const configurationSchema = {
     port: { type: 'number' },
     public: { type: 'string' }
   }
-}
+};
 
-export const configurationValidator = getValidator(configurationSchema, dataValidator)
+export const configurationValidator = getValidator(configurationSchema, dataValidator);

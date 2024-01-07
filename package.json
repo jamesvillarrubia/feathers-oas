@@ -19,6 +19,8 @@
     "cosmiconfig": "^8.1.0",
     "debug": "^4.3.4",
     "npm-add-script": "^1.1.0",
+    "openapi-merger": "^0.7.5",
+    "openapi-to-postmanv2": "^4.18.0",
     "pluralize": "^8.0.0",
     "swagger-merger": "^1.5.4",
     "swagger-to-static": "^1.1.0",
@@ -42,6 +44,7 @@
     "mocha": "^10.2.0",
     "nyc": "^15.1.0",
     "release-it": "^15.7.0",
+    "semistandard": "^17.0.0",
     "sqlite3": "^5.1.4",
     "supertest": "^6.3.3",
     "winston": "^3.8.2"
@@ -50,13 +53,14 @@
     "node": ">=14.0.0"
   },
   "scripts": {
-    "lint": "semistandard --fix",
+    "lint": "",
+    "lint2": "semistandard --fix",
     "mocha": "mocha --recursive test/**/*.test.js",
     "build": "babel src -d lib",
     "test": "printf '\\33c\\e[3J' && npm run lint && npm run coverage",
     "test:dev": "printf '\\33c\\e[3J' && npm run lint && npm run mocha -- --watch --esm --watch-files ./test/**/*,./src/**",
     "coverage": "nyc npm run mocha",
-    "release": "release-it --dry-run --ci --config .release-it.cjs",
+    "release": "release-it --dry-run --ci --config .release-it.changelog",
     "___install": "npm run add:build && npm run add:merge && npm run add:generate && npm run add:validate && npm run add:mock && npm run add:swagger"
   },
   "semistandard": {
@@ -71,11 +75,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jamesvillarrubia/feathers-rpc.git"
+    "url": "git+https://github.com/jamesvillarrubia/feathers-oas.git"
   },
   "keywords": [
     "feathers",
-    "rpc",
+    "openapi",
+    "swagger",
     "feathers-plugin"
   ],
   "author": {
@@ -86,15 +91,11 @@
     {
       "name": "James Villarrubia",
       "email": "james.villarrubia@gmail.com"
-    },
-    {
-      "name": "Ben Zelinski",
-      "email": "bziggz@gmail.com"
     }
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jamesvillarrubia/feathers-rpc/issues"
+    "url": "https://github.com/jamesvillarrubia/feathers-oas/issues"
   },
-  "homepage": "https://github.com/jamesvillarrubia/feathers-rpc#readme"
+  "homepage": "https://github.com/jamesvillarrubia/feathers-oas#readme"
 }

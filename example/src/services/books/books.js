@@ -1,6 +1,6 @@
 // For more information about this file see https://dove.feathersjs.com/guides/cli/service.html
 
-import { hooks as schemaHooks } from '@feathersjs/schema'
+import { hooks as schemaHooks } from '@feathersjs/schema';
 import {
   booksDataValidator,
   booksPatchValidator,
@@ -10,14 +10,14 @@ import {
   booksDataResolver,
   booksPatchResolver,
   booksQueryResolver
-} from './books.schema.js'
-import { BooksService, getOptions } from './books.class.js'
+} from './books.schema.js';
+import { BooksService, getOptions } from './books.class.js';
 
-export const booksPath = 'books'
-export const booksMethods = ['find', 'get', 'create', 'patch', 'update', 'remove']
+export const booksPath = 'books';
+export const booksMethods = ['find', 'get', 'create', 'patch', 'update', 'remove'];
 
-export * from './books.class.js'
-export * from './books.schema.js'
+export * from './books.class.js';
+export * from './books.schema.js';
 
 // A configure function that registers the service and its hooks via `app.configure`
 export const books = (app) => {
@@ -27,7 +27,7 @@ export const books = (app) => {
     methods: booksMethods,
     // You can add additional custom events to be sent to clients here
     events: []
-  })
+  });
   // Initialize hooks
   app.service(booksPath).hooks({
     around: {
@@ -47,5 +47,5 @@ export const books = (app) => {
     error: {
       all: []
     }
-  })
-}
+  });
+};
